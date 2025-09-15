@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>إضافة حساب ذهبي</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>إضافة حساب ذهبي</h2>
+  <form onsubmit="return checkPassword()">
+    <input type="password" id="pass" placeholder="أدخل كلمة السر">
+    <input type="text" id="username" placeholder="اسم حساب إنستقرام">
+    <button type="submit">إضافة</button>
+  </form>
+
+  <script>
+    function checkPassword() {
+      const pass = document.getElementById("pass").value;
+      const user = document.getElementById("username").value;
+      if (pass === "gold123") {
+        alert("تمت إضافة الحساب الذهبي: " + user);
+        // هنا يمكن حفظ الحساب في قاعدة بيانات لاحقًا
+        return false;
+      } else {
+        alert("كلمة السر غير صحيحة");
+        return false;
+      }
+    }
+  </script>
+</body>
+</html>
