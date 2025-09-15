@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>لوحة التحكم | shahin__rknldin</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: white;
+      font-family: Tahoma;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .admin-page {
+      padding: 30px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      color: gold;
+      margin-bottom: 20px;
+    }
+
+    .setting-box {
+      background-color: #1a1a1a;
+      border-left: 5px solid gold;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px auto;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: inset 5px 0 0 gold;
+      text-align: right;
+    }
+
+    .setting-box label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .setting-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      background-color: #0f0f0f;
+      color: white;
+      border: 1px solid gold;
+      font-size: 15px;
+    }
+
+    .action-button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: gold;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .status-msg {
+      margin-top: 20px;
+      color: #00ff99;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .fixed-header {
+      background-color: #1a1a1a;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-button {
+      font-size: 28px;
+      color: gold;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .site-name {
+      font-size: 20px;
+      color: gold;
+    }
+
+    .status-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid gold;
+      background-size: cover;
+      background-position: center;
+      margin-left: 10px;
+    }
+
+    .side-menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      background-color: #1a1a1a;
+      border: 1px solid gold;
+      border-radius: 8px;
+      padding: 10px;
+      z-index: 999;
+    }
+
+    .side-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .side-menu li {
+      padding: 8px 12px;
+      color: white;
+      cursor: pointer;
+      border-bottom: 1px solid #333;
+    }
+
+    .side-menu li:hover {
+      background-color: gold;
+      color: black;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fixed-header">
+    <div class="menu-button" onclick="toggleMenu()">≡</div>
+    <div class="site-name">shahin__rknldin</div>
+    <div id="userCircle" class="status-circle" title="غير مسجل"></div>
+  </div>
+
+  <div id="sideMenu" class="side-menu">
+    <ul>
+      <li onclick="goToLogin()">تسجيل الدخول</li>
+      <li onclick="goToStats()">الإحصائيات</li>
+    </ul>
+  </div>
+
+  <main class="admin-page">
+    <h2 class="section-title">إعدادات لوحة التحكم</h2>
+
+    <div class="setting-box">
+      <label for="goldRate">نسبة ظهور حسابات من يتابع الذهبية:</label>
+      <input type="number" id="goldRate" placeholder="مثلاً 20">
+    </div>
+
+    <div class="setting-box">
+      <label for="blueRate">نسبة ظهور الحسابات الزرقاء:</label>
+      <input type="number" id="blueRate" placeholder="مثلاً 5">
+    </div>
+
+    <div class="setting-box">
+      <label for="goldMessage">الرسالة فوق الحسابات الذهبية:</label>
+      <input type="text" id="goldMessage" placeholder="مثلاً: هذه الحسابات مميزة وتظهر دائمًا">
+    </div>
+
+    <div class="setting-box">
+      <label for="adminPassword">كلمة مرور الدخول للوحة التحكم:</label>
+      <input type="text" id="adminPassword" placeholder="كلمة مرور جديدة">
+    </div>
+
+    <div class="setting-box">
+      <label for="goldPrice">سعر الخدمة الذهبية (ريال):</label>
+      <input type="number" id="goldPrice" placeholder="مثلاً 150">
+    </div>
+
+    <button class="action-button" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+    <p id="statusMsg" class="status-msg"></p>
+  </main>
+
+  <footer>
+    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rknldin</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("sideMenu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    function goToLogin() {
+      window.location.href = "services.html";
+    }
+
+    function goToStats() {
+      window.location.href = "followers.html";
+    }
+
+    function saveSettings() {
+      const goldRate = document.getElementById("goldRate").value;
+      const blueRate = document.getElementById("blueRate").value;
+      const goldMessage = document.getElementById("goldMessage").value;
+      const adminPassword = document.getElementById("adminPassword").value;
+      const goldPrice = document.getElementById("goldPrice").value;
+
+      localStorage.setItem("goldRate", goldRate);
+      localStorage.setItem("blueRate", blueRate);
+      localStorage.setItem("goldMessage", goldMessage);
+      localStorage.setItem("adminPassword", adminPassword);
+      localStorage.setItem("goldPrice", goldPrice);
+
+      document.getElementById("statusMsg").innerText = "✅ تم حفظ جميع الإعدادات بنجاح.";
+    }
+
+    window.onload = function () {
+      const user = localStorage.getItem("activeUser");
+      if (user) {
+        document.getElementById("userCircle").style.backgroundImage = `url(${localStorage.getItem("profilePic")})`;
+        document.getElementById("userCircle").title = user;
+      }
+
+      document.getElementById("goldRate").value = localStorage.getItem("goldRate") || "";
+      document.getElementById("blueRate").value = localStorage.getItem("blueRate") || "";
+      document.getElementById("goldMessage").value = localStorage.getItem("goldMessage") || "";
+      document.getElementById("adminPassword").value = localStorage.getItem("adminPassword") || "";
+      document.getElementById("goldPrice").value = localStorage.getItem("goldPrice") || "";
+    };
+  </script>
+
+</body>
+</html>

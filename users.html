@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>متابعاتي | shahin__rknldin</title>
+  <title>المستخدمون | shahin__rknldin</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
@@ -75,43 +75,58 @@
       background-color: #00aaff;
     }
 
-    .followers-page {
-      padding: 30px;
+    .users-page {
+      padding: 20px;
     }
 
-    .followers-title {
-      font-size: 24px;
+    .section-title {
+      font-size: 22px;
+      margin-bottom: 10px;
       color: gold;
+    }
+
+    .gold-message {
+      color: red;
+      font-size: 16px;
       margin-bottom: 20px;
     }
 
-    .followers-title.blue {
-      color: #00aaff;
-      margin-top: 40px;
-    }
-
-    .follower-item {
+    .user-box {
       background-color: #1a1a1a;
-      border-left: 5px solid #00aaff;
       border-radius: 10px;
       padding: 15px;
       margin: 10px auto;
       width: 90%;
       max-width: 400px;
-      box-shadow: inset 5px 0 0 #00aaff;
+      box-shadow: inset 5px 0 0;
+      position: relative;
+    }
+
+    .user-box.gold {
+      border-left: 5px solid gold;
+    }
+
+    .user-box.blue {
+      border-left: 5px solid #00aaff;
+      padding: 25px;
+    }
+
+    .user-box p {
+      margin: 0;
       font-size: 16px;
     }
 
-    .stats-box {
-      margin-top: 30px;
-      font-size: 16px;
-      color: #ccc;
-    }
-
-    footer {
-      margin-top: 40px;
+    .follow-button {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
       font-size: 14px;
-      color: #888;
     }
   </style>
 </head>
@@ -131,18 +146,13 @@
     </ul>
   </div>
 
-  <main class="followers-page">
-    <h1 class="followers-title">الحسابات التي تابعتها</h1>
-    <div id="followersList"></div>
+  <main class="users-page">
+    <h2 class="section-title">الحسابات الذهبية</h2>
+    <p class="gold-message" id="goldMessage">...</p>
+    <div id="goldUsers"></div>
 
-    <h1 class="followers-title blue">الحسابات التي تابعتك</h1>
-    <div id="followedByList"></div>
-
-    <div class="stats-box">
-      <hr>
-      <p>نسبة انتشارك الحالية: <span id="spreadRatio">0%</span></p>
-      <p>عدد نقاطك: <span id="points">0</span></p>
-    </div>
+    <h2 class="section-title" style="color:#00aaff;">الحسابات الزرقاء</h2>
+    <div id="normalUsers"></div>
   </main>
 
   <footer>
@@ -163,59 +173,8 @@
       window.location.href = "followers.html";
     }
 
-    function calculateSpreadRatio() {
-      const followed = JSON.parse(localStorage.getItem("followedUsers") || "[]");
-      const goldRate = parseFloat(localStorage.getItem("goldRate") || "0");
-      const blueRate = parseFloat(localStorage.getItem("blueRate") || "0");
-
-      let goldCount = 0;
-      let blueCount = 0;
-
-      followed.forEach(user => {
-        if (user.type === "gold") goldCount++;
-        else if (user.type === "blue") blueCount++;
-      });
-
-      const totalSpread = (goldCount * goldRate) + (blueCount * blueRate);
-      localStorage.setItem("currentRatio", totalSpread.toString());
-    }
-
-    function renderFollowers() {
-      const followed = JSON.parse(localStorage.getItem("followedUsers") || "[]");
-      const ratio = localStorage.getItem("currentRatio") || "0";
-      const points = localStorage.getItem("userPoints") || "0";
-
-      const list = document.getElementById("followersList");
-      if (followed.length === 0) {
-        list.innerHTML = "<p>لم تقم بمتابعة أي حساب بعد.</p>";
-      } else {
-        followed.forEach(user => {
-          const item = document.createElement("div");
-          item.className = "follower-item";
-          item.innerText = `${user.username} (${user.type})`;
-          list.appendChild(item);
-        });
-      }
-
-      document.getElementById("spreadRatio").innerText = ratio + "%";
-      document.getElementById("points").innerText = points;
-    }
-
-    function renderFollowedBy() {
-      const currentUser = localStorage.getItem("activeUser");
-      const list = document.getElementById("followedByList");
-      const followers = JSON.parse(localStorage.getItem("followers_" + currentUser) || "[]");
-
-      if (followers.length === 0) {
-        list.innerHTML = "<p>لا يوجد من تابعك حتى الآن.</p>";
-      } else {
-        followers.forEach(name => {
-          const item = document.createElement("div");
-          item.className = "follower-item";
-          item.innerText = `@${name}`;
-          list.appendChild(item);
-        });
-      }
+    function goToFollow(username, type) {
+      window.location.href = `follow.html?user=${encodeURIComponent(username)}&type=${type}`;
     }
 
     window.onload = function () {
@@ -227,9 +186,50 @@
         document.getElementById("userCircle").title = user;
       }
 
-      calculateSpreadRatio();
-      renderFollowers();
-      renderFollowedBy();
+      const message = localStorage.getItem("goldMessage") || "هذه الحسابات مميزة وتظهر بشكل دائم";
+      document.getElementById("goldMessage").innerText = message;
+
+      const goldList = document.getElementById("goldUsers");
+      const goldAccounts = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
+      goldAccounts.forEach(username => {
+        const box = document.createElement("div");
+        box.className = "user-box gold";
+        box.innerHTML = `
+          <p>${username}</p>
+          <button class="follow-button" onclick="goToFollow('${username}', 'gold')">تابع</button>
+        `;
+        goldList.appendChild(box);
+      });
+
+      const normalList = document.getElementById("normalUsers");
+      const normalRate = parseFloat(localStorage.getItem("normalRate") || "5");
+      const goldRate = parseFloat(localStorage.getItem("goldRate") || "20");
+
+      const allUsers = [
+        { username: "@userA", followedGold: false },
+        { username: "@userB", followedGold: true },
+        { username: "@userC", followedGold: false },
+        { username: "@userD", followedGold: true },
+        { username: "@userE", followedGold: false },
+        { username: "@userF", followedGold: false },
+        { username: "@userG", followedGold: true },
+        { username: "@userH", followedGold: false },
+        { username: "@userI", followedGold: true },
+        { username: "@userJ", followedGold: false },
+      ];
+
+      allUsers.forEach(user => {
+        const rate = user.followedGold ? goldRate : normalRate;
+        if (Math.random() * 100 < rate) {
+          const box = document.createElement("div");
+          box.className = "user-box blue";
+          box.innerHTML = `
+            <p>${user.username}</p>
+            <button class="follow-button" onclick="goToFollow('${user.username}', 'blue')">تابع</button>
+          `;
+          normalList.appendChild(box);
+        }
+      });
     };
   </script>
 
