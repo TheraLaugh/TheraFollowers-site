@@ -115,6 +115,34 @@
       background-color: #00aaff;
     }
 
+    .admin-access {
+      margin-top: 10px;
+    }
+
+    .admin-access input {
+      padding: 10px;
+      width: 250px;
+      border-radius: 6px;
+      border: none;
+      background-color: #1a1a1a;
+      color: white;
+      border: 1px solid #00aaff;
+      margin-top: 10px;
+    }
+
+    .admin-access p {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .admin-icon {
+      font-size: 24px;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
     footer {
       margin-top: 40px;
       font-size: 14px;
@@ -135,7 +163,6 @@
       <li onclick="goToLogin()">تسجيل الدخول</li>
       <li onclick="goToUsers()">عرض الحسابات</li>
       <li onclick="goToStats()">الإحصائيات</li>
-      <li onclick="goToAdmin()">لوحة التحكم</li>
     </ul>
   </div>
 
@@ -152,6 +179,15 @@
     </div>
 
     <button class="nav-button" onclick="goToLogin()">🔐 الانتقال إلى قائمة الخدمات</button>
+
+    <div class="admin-access">
+      <span class="admin-icon" onclick="showAdminInput()">🫆</span>
+      <div id="adminInput" style="display:none;">
+        <input type="password" id="adminPass" placeholder="كلمة المرور">
+        <button onclick="checkAdmin()">دخول</button>
+        <p id="adminMsg"></p>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -176,8 +212,17 @@
       window.location.href = "followers.html";
     }
 
-    function goToAdmin() {
-      window.location.href = "admin.html";
+    function showAdminInput() {
+      document.getElementById("adminInput").style.display = "block";
+    }
+
+    function checkAdmin() {
+      const pass = document.getElementById("adminPass").value;
+      if (pass === "gold123") {
+        window.location.href = "admin.html";
+      } else {
+        document.getElementById("adminMsg").innerText = "❌ كلمة المرور غير صحيحة";
+      }
     }
 
     window.onload = function () {
