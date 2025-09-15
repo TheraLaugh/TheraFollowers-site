@@ -11,6 +11,7 @@
   <div class="fixed-header">
     <div class="menu-button">≡</div>
     <div class="site-name">@shahin__rknldin</div>
+    <div id="profileCircle" class="status-circle" title="غير مسجل" onclick="openInstagramLogin()"></div>
   </div>
 
   <main class="users-page">
@@ -23,28 +24,38 @@
   </footer>
 
   <script>
-    const displayRatio = 0.6;
-
     const activeUsers = [
       {
-        username: "@user1",
-        profilePic: "profile1.jpg",
-        latestPost: "latest1.jpg",
+        username: "user1",
+        profilePic: "https://via.placeholder.com/100",
+        latestPost: "https://via.placeholder.com/100",
         link: "https://instagram.com/user1"
       },
       {
-        username: "@user2",
-        profilePic: "profile2.jpg",
-        latestPost: "latest2.jpg",
+        username: "user2",
+        profilePic: "https://via.placeholder.com/100",
+        latestPost: "https://via.placeholder.com/100",
         link: "https://instagram.com/user2"
       }
     ];
 
-    const selectedUsers = activeUsers.filter(() => Math.random() < displayRatio);
+    function openInstagramLogin() {
+      window.open('https://www.instagram.com/accounts/login/', 'loginPopup', 'width=400,height=600');
+      localStorage.setItem('activeUser', 'تم تسجيل الدخول');
+      document.getElementById('profileCircle').style.backgroundColor = '#00aaff';
+      document.getElementById('profileCircle').title = 'تم تسجيل الدخول';
+    }
 
     window.onload = function () {
       const container = document.querySelector(".users-container");
-      selectedUsers.forEach(user => {
+      const loggedIn = localStorage.getItem("activeUser");
+      const circle = document.getElementById("profileCircle");
+      if (loggedIn) {
+        circle.style.backgroundColor = "#00aaff";
+        circle.title = "تم تسجيل الدخول";
+      }
+
+      activeUsers.forEach(user => {
         const card = document.createElement("div");
         card.className = "user-card";
         card.innerHTML = `
@@ -52,14 +63,18 @@
             <img src="${user.profilePic}" alt="صورة شخصية">
           </div>
           <div class="user-info">
-            <h2>${user.username}</h2>
+            <h2>@${user.username}</h2>
             <img src="${user.latestPost}" class="latest-post">
-            <button class="follow-button" onclick="window.open('${user.link}', '_blank')">متابعة</button>
+            <button class="follow-button" onclick="followUser('${user.link}')">تابع</button>
           </div>
         `;
         container.appendChild(card);
       });
     };
+
+    function followUser(link) {
+      window.open(link, 'followPopup', 'width=400,height=600');
+    }
   </script>
 
 </body>
