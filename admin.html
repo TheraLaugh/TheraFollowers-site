@@ -3,236 +3,279 @@
 <head>
   <meta charset="UTF-8">
   <title>لوحة التحكم | shahin__rknldin</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     body {
-      background-color: #0a0a0a;
+      background-color: #0f0f0f;
       color: white;
-      font-family: Tahoma;
+      font-family: Tahoma, sans-serif;
       margin: 0;
       padding: 0;
       text-align: center;
     }
 
-    .admin-page {
-      padding: 30px;
-    }
-
-    .section-title {
-      font-size: 22px;
-      color: gold;
-      margin-bottom: 20px;
-    }
-
-    .setting-box {
-      background-color: #1a1a1a;
-      border-left: 5px solid gold;
-      border-radius: 10px;
-      padding: 20px;
-      margin: 15px auto;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: inset 5px 0 0 gold;
-      text-align: right;
-    }
-
-    .setting-box label {
-      display: block;
-      font-size: 16px;
-      margin-bottom: 8px;
-      color: white;
-    }
-
-    .setting-box input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      background-color: #0f0f0f;
-      color: white;
-      border: 1px solid gold;
-      font-size: 15px;
-    }
-
-    .action-button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: gold;
-      color: black;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .status-msg {
-      margin-top: 20px;
-      color: #00ff99;
-      font-size: 15px;
-      text-align: center;
-    }
-
     .fixed-header {
-      background-color: #1a1a1a;
+      background-color: gold;
       padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .menu-button {
-      font-size: 28px;
-      color: gold;
+    .back-button {
+      font-size: 24px;
+      color: black;
       cursor: pointer;
-      padding: 5px;
+      padding: 5px 15px;
+      font-weight: bold;
     }
 
     .site-name {
       font-size: 20px;
+      color: black;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 30px;
+    }
+
+    h1 {
       color: gold;
+      margin-bottom: 30px;
     }
 
-    .status-circle {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: white;
-      border: 2px solid gold;
-      background-size: cover;
-      background-position: center;
-      margin-left: 10px;
-    }
-
-    .side-menu {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 10px;
+    .section {
       background-color: #1a1a1a;
-      border: 1px solid gold;
-      border-radius: 8px;
-      padding: 10px;
-      z-index: 999;
+      border-left: 5px solid #00aaff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+      max-width: 500px;
+      margin: auto;
+      text-align: right;
     }
 
-    .side-menu ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .section.gold {
+      border-left-color: gold;
     }
 
-    .side-menu li {
-      padding: 8px 12px;
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid #00aaff;
+      background-color: #0a0a0a;
       color: white;
-      cursor: pointer;
-      border-bottom: 1px solid #333;
     }
 
-    .side-menu li:hover {
+    button {
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0099dd;
+    }
+
+    .gold button {
       background-color: gold;
       color: black;
     }
 
-    footer {
-      margin-top: 40px;
+    .gold button:hover {
+      background-color: #e6c200;
+    }
+
+    .info {
       font-size: 14px;
-      color: #888;
+      color: #ccc;
+      margin-top: 10px;
+    }
+
+    .account-list {
+      font-size: 14px;
+      color: red;
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    .account-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #2a2a2a;
+      padding: 6px 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+    }
+
+    .account-item span {
+      color: white;
+    }
+
+    .account-item button {
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .account-item button:hover {
+      background-color: darkred;
     }
   </style>
 </head>
 <body>
 
   <div class="fixed-header">
-    <div class="menu-button" onclick="toggleMenu()">≡</div>
+    <div class="back-button" onclick="goBack()">←</div>
     <div class="site-name">shahin__rknldin</div>
-    <div id="userCircle" class="status-circle" title="غير مسجل"></div>
   </div>
 
-  <div id="sideMenu" class="side-menu">
-    <ul>
-      <li onclick="goToLogin()">تسجيل الدخول</li>
-      <li onclick="goToStats()">الإحصائيات</li>
-    </ul>
-  </div>
+  <main>
+    <h1>لوحة التحكم</h1>
 
-  <main class="admin-page">
-    <h2 class="section-title">إعدادات لوحة التحكم</h2>
-
-    <div class="setting-box">
-      <label for="goldRate">نسبة ظهور حسابات من يتابع الذهبية:</label>
-      <input type="number" id="goldRate" placeholder="مثلاً 20">
+    <div class="section gold">
+      <label>سعر الخدمة الذهبية (بالدولار)</label>
+      <input type="number" id="goldPriceInput" placeholder="مثال: 1">
+      <button onclick="saveGoldPrice()">حفظ السعر</button>
+      <div class="info" id="priceInfo"></div>
     </div>
 
-    <div class="setting-box">
-      <label for="blueRate">نسبة ظهور الحسابات الزرقاء:</label>
-      <input type="number" id="blueRate" placeholder="مثلاً 5">
+    <div class="section gold">
+      <label>الحسابات الذهبية (مفصولة بفواصل)</label>
+      <input type="text" id="goldInput" placeholder="user1,user2,user3">
+      <label>رسالة القسم الذهبي</label>
+      <input type="text" id="goldMsgInput" placeholder="اكتب رسالة تظهر فوق الحسابات الذهبية">
+      <label>قيمة انتشار عند متابعة حساب ذهبي</label>
+      <input type="number" id="goldSpreadInput" placeholder="مثال: 5">
+      <button onclick="saveGold()">حفظ الذهبية</button>
+      <div class="account-list" id="goldList"></div>
     </div>
 
-    <div class="setting-box">
-      <label for="goldMessage">الرسالة فوق الحسابات الذهبية:</label>
-      <input type="text" id="goldMessage" placeholder="مثلاً: هذه الحسابات مميزة وتظهر دائمًا">
+    <div class="section">
+      <label>الحسابات الزرقاء (مفصولة بفواصل)</label>
+      <input type="text" id="blueInput" placeholder="user4,user5,user6">
+      <label>رسالة القسم الأزرق</label>
+      <input type="text" id="blueMsgInput" placeholder="اكتب رسالة تظهر فوق الحسابات الزرقاء">
+      <label>قيمة انتشار عند متابعة حساب أزرق</label>
+      <input type="number" id="blueSpreadInput" placeholder="مثال: 1">
+      <button onclick="saveBlue()">حفظ الزرقاء</button>
     </div>
 
-    <div class="setting-box">
-      <label for="adminPassword">كلمة مرور الدخول للوحة التحكم:</label>
-      <input type="text" id="adminPassword" placeholder="كلمة مرور جديدة">
+    <div class="section">
+      <label>منع انتشار حساب أزرق</label>
+      <input type="text" id="blockInput" placeholder="اكتب اسم المستخدم">
+      <button onclick="blockBlue()">منع الانتشار</button>
+      <div class="account-list" id="blockedList"></div>
     </div>
-
-    <div class="setting-box">
-      <label for="goldPrice">سعر الخدمة الذهبية (ريال):</label>
-      <input type="number" id="goldPrice" placeholder="مثلاً 150">
-    </div>
-
-    <button class="action-button" onclick="saveSettings()">💾 حفظ الإعدادات</button>
-    <p id="statusMsg" class="status-msg"></p>
   </main>
-
-  <footer>
-    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rknldin</p>
-  </footer>
-
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById("sideMenu");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    function goBack() {
+      history.back();
     }
 
-    function goToLogin() {
-      window.location.href = "services.html";
+    function saveGoldPrice() {
+      const price = parseFloat(document.getElementById("goldPriceInput").value);
+      if (!isNaN(price)) {
+        localStorage.setItem("goldServicePrice", price.toFixed(2));
+        document.getElementById("priceInfo").innerText = `✅ تم حفظ سعر الخدمة الذهبية: $${price.toFixed(2)}`;
+      }
     }
 
-    function goToStats() {
-      window.location.href = "followers.html";
+    function saveGold() {
+      const accounts = document.getElementById("goldInput").value.split(",").map(x => x.trim()).filter(Boolean);
+      const msg = document.getElementById("goldMsgInput").value;
+      const spread = parseInt(document.getElementById("goldSpreadInput").value);
+
+      localStorage.setItem("goldAccounts", JSON.stringify(accounts));
+      localStorage.setItem("goldMessage", msg);
+      localStorage.setItem("goldSpreadValue", spread);
+
+      renderGoldList();
     }
 
-    function saveSettings() {
-      const goldRate = document.getElementById("goldRate").value;
-      const blueRate = document.getElementById("blueRate").value;
-      const goldMessage = document.getElementById("goldMessage").value;
-      const adminPassword = document.getElementById("adminPassword").value;
-      const goldPrice = document.getElementById("goldPrice").value;
+    function saveBlue() {
+      const accounts = document.getElementById("blueInput").value.split(",").map(x => x.trim()).filter(Boolean);
+      const msg = document.getElementById("blueMsgInput").value;
+      const spread = parseInt(document.getElementById("blueSpreadInput").value);
 
-      localStorage.setItem("goldRate", goldRate);
-      localStorage.setItem("blueRate", blueRate);
-      localStorage.setItem("goldMessage", goldMessage);
-      localStorage.setItem("adminPassword", adminPassword);
-      localStorage.setItem("goldPrice", goldPrice);
+      localStorage.setItem("blueAccounts", JSON.stringify(accounts));
+      localStorage.setItem("blueMessage", msg);
+      localStorage.setItem("blueSpreadValue", spread);
+    }
 
-      document.getElementById("statusMsg").innerText = "✅ تم حفظ جميع الإعدادات بنجاح.";
+    function blockBlue() {
+      const username = document.getElementById("blockInput").value.trim();
+      if (!username) return;
+
+      let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
+      if (!blocked.includes(username)) {
+        blocked.push(username);
+        localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
+      }
+
+      document.getElementById("blockInput").value = "";
+      renderBlockedList();
+    }
+
+    function removeBlocked(username) {
+      let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
+      blocked = blocked.filter(u => u !== username);
+      localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
+      renderBlockedList();
+    }
+
+    function removeGold(username) {
+      let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
+      gold = gold.filter(u => u !== username);
+      localStorage.setItem("goldAccounts", JSON.stringify(gold));
+      renderGoldList();
+    }
+
+    function renderBlockedList() {
+      let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
+      const container = document.getElementById("blockedList");
+      container.innerHTML = "الحسابات التي تم منع انتشارها:";
+      blocked.forEach(username => {
+        const item = document.createElement("div");
+        item.className = "account-item";
+        item.innerHTML = `<span>@${username}</span><button onclick="removeBlocked('${username}')">❌ حذف</button>`;
+        container.appendChild(item);
+      });
+    }
+
+    function renderGoldList() {
+      let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
+      const container = document.getElementById("goldList");
+      container.innerHTML = "الحسابات الذهبية الحالية:";
+      gold.forEach(username => {
+        const item = document.createElement("div");
+        item.className = "account-item";
+        item.innerHTML = `<span>@${username}</span><button onclick="removeGold('${username}')">❌ حذف</button>`;
+        container.appendChild(item);
+      });
     }
 
     window.onload = function () {
-      const user = localStorage.getItem("activeUser");
-      if (user) {
-        document.getElementById("userCircle").style.backgroundImage = `url(${localStorage.getItem("profilePic")})`;
-        document.getElementById("userCircle").title = user;
-      }
-
-      document.getElementById("goldRate").value = localStorage.getItem("goldRate") || "";
-      document.getElementById("blueRate").value = localStorage.getItem("blueRate") || "";
-      document.getElementById("goldMessage").value = localStorage.getItem("goldMessage") || "";
-      document.getElementById("adminPassword").value = localStorage.getItem("adminPassword") || "";
-      document.getElementById("goldPrice").value = localStorage.getItem("goldPrice") || "";
+      renderGoldList();
+      renderBlockedList();
     };
   </script>
 

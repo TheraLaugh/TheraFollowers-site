@@ -2,131 +2,187 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>المستخدمون | shahin__rknldin</title>
-  <link rel="stylesheet" href="style.css">
+  <title>قائمة الحسابات | shahin__rknldin</title>
   <style>
     body {
       background-color: #0f0f0f;
       color: white;
-      font-family: Tahoma;
+      font-family: Tahoma, sans-serif;
       margin: 0;
       padding: 0;
-      text-align: center;
     }
 
     .fixed-header {
-      background-color: #1a1a1a;
+      background-color: #0077cc;
       padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
 
     .menu-button {
-      font-size: 28px;
-      color: #00aaff;
+      font-size: 24px;
+      color: white;
       cursor: pointer;
-      padding: 5px;
+      padding: 5px 15px;
+      font-weight: bold;
     }
 
     .site-name {
       font-size: 20px;
-      color: #00aaff;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      flex-grow: 1;
     }
 
-    .status-circle {
-      width: 40px;
-      height: 40px;
+    .profile-pic {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background-color: white;
-      border: 2px solid #00aaff;
-      background-size: cover;
-      background-position: center;
-      margin-left: 10px;
+      object-fit: cover;
+      border: 2px solid white;
     }
 
     .side-menu {
-      display: none;
       position: absolute;
       top: 60px;
       right: 10px;
-      background-color: #1a1a1a;
-      border: 1px solid #00aaff;
+      background-color: #222;
+      border: 2px solid #0077cc;
       border-radius: 8px;
       padding: 10px;
-      z-index: 999;
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      width: 160px;
     }
 
-    .side-menu ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .side-menu li {
-      padding: 8px 12px;
+    .side-menu a {
       color: white;
-      cursor: pointer;
-      border-bottom: 1px solid #333;
+      text-decoration: none;
+      margin: 0;
+      font-size: 14px;
+      padding: 8px;
+      border-bottom: 1px solid #0077cc;
     }
 
-    .side-menu li:hover {
-      background-color: #00aaff;
+    .side-menu a:last-child {
+      border-bottom: none;
     }
 
-    .users-page {
+    main {
       padding: 20px;
     }
 
-    .section-title {
-      font-size: 22px;
-      margin-bottom: 10px;
+    h2 {
       color: gold;
+      margin-top: 30px;
     }
 
-    .gold-message {
-      color: red;
-      font-size: 16px;
-      margin-bottom: 20px;
+    .blue-title {
+      color: #00aaff;
+      font-size: 20px;
+      margin-top: 40px;
     }
 
-    .user-box {
+    .message {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .gold-section {
+      background-color: #222;
+      border: 2px solid gold;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 30px;
+    }
+
+    .gold-accounts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .gold-account {
+      background-color: gold;
+      color: black;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .blue-account {
       background-color: #1a1a1a;
+      border: 2px solid #333;
       border-radius: 10px;
       padding: 15px;
-      margin: 10px auto;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: inset 5px 0 0;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
       position: relative;
     }
 
-    .user-box.gold {
-      border-left: 5px solid gold;
+    .blue-account::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background-color: #00aaff;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
     }
 
-    .user-box.blue {
-      border-left: 5px solid #00aaff;
-      padding: 25px;
+    .blue-account.expanded {
+      transform: scale(1.05);
+      background-color: #002244;
+      border-color: #00aaff;
     }
 
-    .user-box p {
-      margin: 0;
-      font-size: 16px;
+    .account-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .account-pic {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid white;
     }
 
     .follow-button {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      background-color: #00aaff;
-      color: white;
+      padding: 8px 16px;
       border: none;
-      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
+      background-color: #00aaff;
+      color: white;
+    }
+
+    .official-follow {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .official-follow a {
+      background-color: #00aaff;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
     }
   </style>
 </head>
@@ -135,101 +191,122 @@
   <div class="fixed-header">
     <div class="menu-button" onclick="toggleMenu()">≡</div>
     <div class="site-name">shahin__rknldin</div>
-    <div id="userCircle" class="status-circle" title="غير مسجل"></div>
+    <img src="" alt="صورة الملف الشخصي" class="profile-pic" id="profileImage">
+    <div class="side-menu" id="sideMenu">
+      <a href="login.html">تسجيل الدخول</a>
+      <a href="services.html">الخدمات</a>
+      <a href="javascript:history.back()">← رجوع</a>
+    </div>
   </div>
 
-  <div id="sideMenu" class="side-menu">
-    <ul>
-      <li id="menu-login" onclick="goToLogin()">تسجيل الدخول</li>
-      <li id="menu-points" style="display:none;">نقاطي</li>
-      <li onclick="goToStats()">الإحصائيات</li>
-    </ul>
-  </div>
+  <main>
+    <div class="gold-section">
+      <h2>الحسابات الذهبية</h2>
+      <div class="message" id="goldMessage"></div>
+      <div class="gold-accounts" id="goldAccountsList"></div>
+    </div>
 
-  <main class="users-page">
-    <h2 class="section-title">الحسابات الذهبية</h2>
-    <p class="gold-message" id="goldMessage">...</p>
-    <div id="goldUsers"></div>
-
-    <h2 class="section-title" style="color:#00aaff;">الحسابات الزرقاء</h2>
-    <div id="normalUsers"></div>
+    <div class="blue-title">الحسابات الزرقاء</div>
+    <div class="message" id="blueMessage"></div>
+    <div id="blueAccountsList"></div>
   </main>
-
-  <footer>
-    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rknldin</p>
-  </footer>
 
   <script>
     function toggleMenu() {
       const menu = document.getElementById("sideMenu");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
 
-    function goToLogin() {
-      window.location.href = "services.html";
+    function isLoggedInToInstagram() {
+      return localStorage.getItem("instagramLoggedIn") === "true";
     }
 
-    function goToStats() {
-      window.location.href = "followers.html";
+    function followUser(username, element) {
+      if (!isLoggedInToInstagram()) {
+        alert("يجب عليك تسجيل الدخول إلى إنستقرام لإتمام عملية المتابعة");
+        window.location.href = "https://www.instagram.com/accounts/login/";
+        return;
+      }
+
+      element.classList.add("expanded");
+
+      setTimeout(() => {
+        const container = document.createElement("div");
+        container.className = "official-follow";
+        container.innerHTML = `<a href="https://www.instagram.com/${username}" target="_blank">متابعة</a>`;
+        element.appendChild(container);
+
+        const followed = confirm(`هل قمت بمتابعة @${username}؟`);
+        if (followed) {
+          markAsFollowed(username);
+          renderAccounts();
+        }
+      }, 1000);
     }
 
-    function goToFollow(username, type) {
-      window.location.href = `follow.html?user=${encodeURIComponent(username)}&type=${type}`;
+    function markAsFollowed(username) {
+      let followed = JSON.parse(localStorage.getItem("followedAccounts") || "[]");
+      if (!followed.includes(username)) {
+        followed.push(username);
+        localStorage.setItem("followedAccounts", JSON.stringify(followed));
+      }
+    }
+
+    function renderAccounts() {
+      const gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
+      const blue = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
+      const blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
+      const followed = JSON.parse(localStorage.getItem("followedAccounts") || "[]");
+      const profilePics = JSON.parse(localStorage.getItem("accountImages") || "{}");
+
+      const goldMsg = localStorage.getItem("goldMessage") || "";
+      const blueMsg = localStorage.getItem("blueMessage") || "";
+
+      document.getElementById("goldMessage").innerText = goldMsg;
+      document.getElementById("blueMessage").innerText = blueMsg;
+
+      const goldContainer = document.getElementById("goldAccountsList");
+      const blueContainer = document.getElementById("blueAccountsList");
+
+      goldContainer.innerHTML = "";
+      blueContainer.innerHTML = "";
+
+      gold.forEach(username => {
+        if (!followed.includes(username)) {
+          const item = document.createElement("div");
+          item.className = "gold-account";
+          item.innerText = `@${username}`;
+          goldContainer.appendChild(item);
+        }
+      });
+
+      blue.forEach(username => {
+        if (!blocked.includes(username) && !followed.includes(username)) {
+          const item = document.createElement("div");
+          item.className = "blue-account";
+          const imgSrc = profilePics[username] || "";
+          item.innerHTML = `
+            <div class="account-info">
+              <img src="${imgSrc}" class="account-pic" alt="صورة الحساب">
+              <span>@${username}</span>
+            </div>
+            <button class="follow-button" onclick="followUser('${username}', this.parentElement)">تابع</button>
+          `;
+          blueContainer.appendChild(item);
+        }
+      });
+    }
+
+    function loadProfileImage() {
+      const imgUrl = localStorage.getItem("profileImageUrl");
+      if (imgUrl) {
+        document.getElementById("profileImage").src = imgUrl;
+      }
     }
 
     window.onload = function () {
-      const user = localStorage.getItem("activeUser");
-      if (user) {
-        document.getElementById("menu-login").innerText = "حسابي";
-        document.getElementById("menu-points").style.display = "inline-block";
-        document.getElementById("userCircle").style.backgroundImage = `url(${localStorage.getItem("profilePic")})`;
-        document.getElementById("userCircle").title = user;
-      }
-
-      const message = localStorage.getItem("goldMessage") || "هذه الحسابات مميزة وتظهر بشكل دائم";
-      document.getElementById("goldMessage").innerText = message;
-
-      const goldList = document.getElementById("goldUsers");
-      const goldAccounts = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
-      goldAccounts.forEach(username => {
-        const box = document.createElement("div");
-        box.className = "user-box gold";
-        box.innerHTML = `
-          <p>${username}</p>
-          <button class="follow-button" onclick="goToFollow('${username}', 'gold')">تابع</button>
-        `;
-        goldList.appendChild(box);
-      });
-
-      const normalList = document.getElementById("normalUsers");
-      const normalRate = parseFloat(localStorage.getItem("normalRate") || "5");
-      const goldRate = parseFloat(localStorage.getItem("goldRate") || "20");
-
-      const allUsers = [
-        { username: "@userA", followedGold: false },
-        { username: "@userB", followedGold: true },
-        { username: "@userC", followedGold: false },
-        { username: "@userD", followedGold: true },
-        { username: "@userE", followedGold: false },
-        { username: "@userF", followedGold: false },
-        { username: "@userG", followedGold: true },
-        { username: "@userH", followedGold: false },
-        { username: "@userI", followedGold: true },
-        { username: "@userJ", followedGold: false },
-      ];
-
-      allUsers.forEach(user => {
-        const rate = user.followedGold ? goldRate : normalRate;
-        if (Math.random() * 100 < rate) {
-          const box = document.createElement("div");
-          box.className = "user-box blue";
-          box.innerHTML = `
-            <p>${user.username}</p>
-            <button class="follow-button" onclick="goToFollow('${user.username}', 'blue')">تابع</button>
-          `;
-          normalList.appendChild(box);
-        }
-      });
+      loadProfileImage();
+      renderAccounts();
     };
   </script>
 

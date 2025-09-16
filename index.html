@@ -227,8 +227,9 @@
 
     window.onload = function () {
       const user = localStorage.getItem("activeUser");
-      if (user) {
-        document.getElementById("userCircle").style.backgroundImage = `url(${localStorage.getItem("profilePic")})`;
+      const pic = localStorage.getItem("profilePic");
+      if (user && pic) {
+        document.getElementById("userCircle").style.backgroundImage = `url(${pic})`;
         document.getElementById("userCircle").title = user;
       }
     };

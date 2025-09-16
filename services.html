@@ -128,6 +128,12 @@
       color: #00ff99;
       margin-top: -10px;
     }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+    }
   </style>
 </head>
 <body>
@@ -150,7 +156,7 @@
     <h1 class="services-title">الخدمات</h1>
 
     <div class="services-container">
-      <div class="service-box blue" onclick="openInstagramLogin()">
+      <div class="service-box blue" onclick="goToLogin()">
         <h2>خدمة زيادة متابعين</h2>
         <p>طريقة لزيادة انتشار حسابك عن طريق عرض حسابك على الكثير من المستخدمين الحاصلين للموقع ويقومون بمتابعته</p>
       </div>
@@ -177,18 +183,11 @@
     }
 
     function goToLogin() {
-      window.location.href = "services.html";
+      window.location.href = "login.html";
     }
 
     function goToStats() {
       window.location.href = "stats.html";
-    }
-
-    function openInstagramLogin() {
-      window.open('https://www.instagram.com/accounts/login/', 'loginPopup', 'width=400,height=600');
-      localStorage.setItem("activeUser", "@user123");
-      localStorage.setItem("profilePic", "https://via.placeholder.com/100");
-      window.location.href = "users.html";
     }
 
     function goToGold() {

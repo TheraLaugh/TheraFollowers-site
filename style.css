@@ -1,14 +1,23 @@
+:root {
+  --bg-main: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --color-primary: #00aaff;
+  --color-white: #ffffff;
+  --color-gray: #888;
+  --font-main: Tahoma, sans-serif;
+}
+
 body {
-  background-color: #0f0f0f;
-  color: white;
-  font-family: Tahoma;
+  background-color: var(--bg-main);
+  color: var(--color-white);
+  font-family: var(--font-main);
   margin: 0;
   padding: 0;
   text-align: center;
 }
 
 .fixed-header {
-  background-color: #1a1a1a;
+  background-color: var(--bg-secondary);
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -17,25 +26,27 @@ body {
 
 .menu-button {
   font-size: 28px;
-  color: #00aaff;
+  color: var(--color-primary);
   cursor: pointer;
   padding: 5px;
 }
 
 .site-name {
   font-size: 20px;
-  color: #00aaff;
+  color: var(--color-primary);
 }
 
-.status-circle {
+.status-circle,
+.profile-pic {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: white;
-  border: 2px solid #00aaff;
+  background-color: var(--color-white);
+  border: 2px solid var(--color-primary);
   background-size: cover;
   background-position: center;
   margin-left: 10px;
+  object-fit: cover;
 }
 
 .side-menu {
@@ -43,11 +54,12 @@ body {
   position: absolute;
   top: 60px;
   right: 10px;
-  background-color: #1a1a1a;
-  border: 1px solid #00aaff;
+  background-color: var(--bg-secondary);
+  border: 2px solid var(--color-primary);
   border-radius: 8px;
   padding: 10px;
   z-index: 999;
+  width: 160px;
 }
 
 .side-menu ul {
@@ -58,17 +70,21 @@ body {
 
 .side-menu li {
   padding: 8px 12px;
-  color: white;
+  color: var(--color-white);
   cursor: pointer;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--color-primary);
+}
+
+.side-menu li:last-child {
+  border-bottom: none;
 }
 
 .side-menu li:hover {
-  background-color: #00aaff;
+  background-color: var(--color-primary);
 }
 
 footer {
   margin-top: 40px;
   font-size: 14px;
-  color: #888;
+  color: var(--color-gray);
 }
