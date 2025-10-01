@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>متابعاتي | shahin__rknldin</title>
-  <link rel="stylesheet" href="style.css">
+  <title>متابعاتي | TheraFollowers</title>
   <style>
     body {
       background-color: #0f0f0f;
@@ -80,7 +79,7 @@
     }
 
     .followers-title {
-      font-size: 24px;
+      font-size: 22px;
       color: gold;
       margin-bottom: 20px;
     }
@@ -100,6 +99,7 @@
       max-width: 400px;
       box-shadow: inset 5px 0 0 #00aaff;
       font-size: 16px;
+      text-align: left;
     }
 
     .stats-box {
@@ -113,29 +113,48 @@
       font-size: 14px;
       color: #888;
     }
+
+    @media (max-width: 600px) {
+      body {
+        zoom: 1;
+      }
+    }
+
+    @media (min-width: 601px) {
+      body {
+        zoom: 1;
+      }
+    }
   </style>
 </head>
 <body>
 
   <div class="fixed-header">
     <div class="menu-button" onclick="toggleMenu()">≡</div>
-    <div class="site-name">shahin__rknldin</div>
+    <div class="site-name">TheraFollowers</div>
     <div id="userCircle" class="status-circle" title="غير مسجل"></div>
   </div>
 
   <div id="sideMenu" class="side-menu">
     <ul>
-      <li id="menu-login" onclick="goToLogin()">تسجيل الدخول</li>
-      <li id="menu-points" style="display:none;">نقاطي</li>
-      <li onclick="goToStats()">الإحصائيات</li>
+      <li onclick="window.location.href='login.html'">تسجيل الدخول</li>
+      <li onclick="window.location.href='services.html'">الخدمات</li>
+      <li onclick="window.location.href='users.html'">قائمة الحسابات</li>
+      <li onclick="window.location.href='followers.html'">الإحصائيات</li>
     </ul>
   </div>
 
   <main class="followers-page">
-    <h1 class="followers-title">الحسابات التي تابعتها</h1>
-    <div id="followersList"></div>
+    <h1 class="followers-title blue">المتابعات التي تم التحقق منها ✅</h1>
+    <div id="verifiedList"></div>
 
-    <h1 class="followers-title blue">الحسابات التي تابعتك</h1>
+    <h1 class="followers-title blue">المتابعات التي فشل التحقق منها ❌</h1>
+    <div id="failedList"></div>
+
+    <h1 class="followers-title blue">المتابعات المرفوضة 🚫</h1>
+    <div id="rejectedList"></div>
+
+    <h1 class="followers-title">الحسابات التي تابعتك</h1>
     <div id="followedByList"></div>
 
     <div class="stats-box">
@@ -146,21 +165,13 @@
   </main>
 
   <footer>
-    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rknldin</p>
+    <p>© 2025 جميع الحقوق محفوظة لـ TheraFollowers</p>
   </footer>
 
   <script>
     function toggleMenu() {
       const menu = document.getElementById("sideMenu");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
-    }
-
-    function goToLogin() {
-      window.location.href = "services.html";
-    }
-
-    function goToStats() {
-      window.location.href = "followers.html";
     }
 
     function calculateSpreadRatio() {
@@ -180,31 +191,29 @@
       localStorage.setItem("currentRatio", totalSpread.toString());
     }
 
-    function renderFollowers() {
+    function renderFollowersByStatus(status, containerId) {
       const followed = JSON.parse(localStorage.getItem("followedUsers") || "[]");
-      const ratio = localStorage.getItem("currentRatio") || "0";
-      const points = localStorage.getItem("userPoints") || "0";
+      const verificationList = JSON.parse(localStorage.getItem("pendingVerifications") || "[]");
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
 
-      const list = document.getElementById("followersList");
-      if (followed.length === 0) {
-        list.innerHTML = "<p>لم تقم بمتابعة أي حساب بعد.</p>";
-      } else {
-        followed.forEach(user => {
+      followed.forEach(user => {
+        const match = verificationList.find(v => v.username === user.username);
+        if (match && match.status === status) {
           const item = document.createElement("div");
           item.className = "follower-item";
-          item.innerText = `${user.username} (${user.type})`;
-          list.appendChild(item);
-        });
-      }
-
-      document.getElementById("spreadRatio").innerText = ratio + "%";
-      document.getElementById("points").innerText = points;
+          item.innerText = `@${user.username} (${user.type})`;
+          container.appendChild(item);
+        }
+      });
     }
 
     function renderFollowedBy() {
       const currentUser = localStorage.getItem("activeUser");
       const list = document.getElementById("followedByList");
       const followers = JSON.parse(localStorage.getItem("followers_" + currentUser) || "[]");
+
+      list.innerHTML = "";
 
       if (followers.length === 0) {
         list.innerHTML = "<p>لا يوجد من تابعك حتى الآن.</p>";
@@ -221,15 +230,18 @@
     window.onload = function () {
       const user = localStorage.getItem("activeUser");
       if (user) {
-        document.getElementById("menu-login").innerText = "حسابي";
-        document.getElementById("menu-points").style.display = "inline-block";
         document.getElementById("userCircle").style.backgroundImage = `url(${localStorage.getItem("profilePic")})`;
         document.getElementById("userCircle").title = user;
       }
 
       calculateSpreadRatio();
-      renderFollowers();
+      renderFollowersByStatus("verified", "verifiedList");
+      renderFollowersByStatus("failed", "failedList");
+      renderFollowersByStatus("rejected", "rejectedList");
       renderFollowedBy();
+
+      document.getElementById("spreadRatio").innerText = localStorage.getItem("currentRatio") + "%";
+      document.getElementById("points").innerText = localStorage.getItem("userPoints") || "0";
     };
   </script>
 

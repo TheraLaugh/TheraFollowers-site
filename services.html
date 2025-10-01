@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الخدمات | shahin__rknldin</title>
+  <title>الخدمات | TheraFollowers</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #0f0f0f;
       color: white;
-      font-family: 'Tahoma', sans-serif;
+      font-family: Tahoma, sans-serif;
       margin: 0;
       padding: 0;
       text-align: center;
@@ -33,6 +34,7 @@
     .site-name {
       font-size: 20px;
       color: #00aaff;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
 
     .status-circle {
@@ -83,6 +85,7 @@
       font-size: 24px;
       color: #00aaff;
       margin-bottom: 20px;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
 
     .services-container {
@@ -102,6 +105,7 @@
       position: relative;
       box-shadow: 0 0 0 5px transparent;
       cursor: pointer;
+      font-family: Tahoma, sans-serif;
     }
 
     .service-box.blue {
@@ -116,6 +120,7 @@
       margin-top: 0;
       font-size: 20px;
       color: inherit;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
 
     .service-box p {
@@ -123,10 +128,10 @@
       line-height: 1.6;
     }
 
-    .label {
-      font-size: 16px;
+    .service-box .label {
+      font-size: 14px;
       color: #00ff99;
-      margin-top: -10px;
+      margin-top: 10px;
     }
 
     footer {
@@ -140,7 +145,7 @@
 
   <div class="fixed-header">
     <div class="menu-button" onclick="toggleMenu()">≡</div>
-    <div class="site-name">shahin__rknldin</div>
+    <div class="site-name">TheraFollowers</div>
     <div id="userCircle" class="status-circle" title="غير مسجل"></div>
   </div>
 
@@ -159,19 +164,19 @@
       <div class="service-box blue" onclick="goToLogin()">
         <h2>خدمة زيادة متابعين</h2>
         <p>طريقة لزيادة انتشار حسابك عن طريق عرض حسابك على الكثير من المستخدمين الحاصلين للموقع ويقومون بمتابعته</p>
+        <div class="label">مجانا</div>
       </div>
-      <p class="label">مجانا</p>
 
       <div class="service-box gold" onclick="goToGold()">
         <h2>خدمة القائمة الذهبية</h2>
         <p>طريقة لزيادة متابعين حسابك عن طريق وضع حسابك على القائمة الذهبية، وهذا يعني أن المستخدمين يقومون بمتابعته بشكل كبير</p>
+        <div class="label">مدفوع</div>
       </div>
-      <p class="label">مدفوع</p>
     </div>
   </main>
 
   <footer>
-    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rknldin</p>
+    <p>© 2025 جميع الحقوق محفوظة لـ TheraLaugh</p>
   </footer>
 
   <script>
@@ -187,7 +192,7 @@
     }
 
     function goToStats() {
-      window.location.href = "stats.html";
+      window.location.href = "followers.html";
     }
 
     function goToGold() {

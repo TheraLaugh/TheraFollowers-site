@@ -2,8 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>الرئيسية | shahin__rklnidn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الرئيسية | TheraFollowers</title>
+  <meta name="description" content="TheraFollowers - موقع يساعدك في تطوير حسابك على الانستقرام بطريقة بسيطة وآمنة عن طريق نشر حسابك بين عدد من الأشخاص المهتمين.">
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #0a0a0a;
@@ -32,8 +35,11 @@
     }
 
     .welcome-box h2 {
+      font-family: 'Cairo', Tahoma, sans-serif;
+      font-size: 24px;
+      font-weight: bold;
       color: #00aaff;
-      margin-bottom: 15px;
+      margin: 0 0 10px 0;
     }
 
     .nav-button {
@@ -73,6 +79,7 @@
     .site-name {
       font-size: 20px;
       color: #00aaff;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
 
     .status-circle {
@@ -154,7 +161,7 @@
 
   <div class="fixed-header">
     <div class="menu-button" onclick="toggleMenu()">≡</div>
-    <div class="site-name">shahin__rklnidn</div>
+    <div class="site-name">TheraFollowers</div>
     <div id="userCircle" class="status-circle" title="غير مسجل"></div>
   </div>
 
@@ -168,13 +175,20 @@
 
   <main class="home-page">
     <div class="welcome-box">
-      <h2>أهلاً وسهلاً بكم في موقع shahin__rklnidn</h2>
+      <h2>أهلاً بكم في عالم</h2>
+      <h2>✨TheraFollowers✨</h2>
       <p>
-        هذا الموقع يساعدك في زيادة عدد متابعينك على إنستقرام، وذلك من خلال نشر حسابك بين عدد كبير من الأشخاص المهتمين.
+        موقع يساعدك في تطوير حسابك على الانستقرام بطريقة بسيطة وآمنة عن طريق نشر حسابك بين عدد من الأشخاص المهتمين.
         <br><br>
-        <strong>ملاحظة:</strong> لن يتم نشر حسابك إذا كان يحتوي على محتوى مخلّ بالآداب أو مخالف للسياسات.
+        <strong>ملاحظة:</strong> سيتم منع حسابك من الانتشار إذا كان محتواه مخلّ بالآداب أو مخالف للسياسات.
+        <br>
+        <button onclick="window.location.href='policy.html'" style="background:none;border:none;color:#00aaff;cursor:pointer;">
+          لمعرفة أكثر عن سياسة وخصوصية الموقع
+        </button>
         <br><br>
-        للتواصل معنا عبر إنستقرام: <span style="color:#00aaff">@shahin__rklnidn</span>
+        <button onclick="window.location.href='https://www.instagram.com/theralaugh?igsh=MXJ2cG1lZTUxMmN6Nw=='" style="background:none;border:none;color:#00aaff;cursor:pointer;font-size:16px;">
+          📱 تواصل معنا على إنستغرام
+        </button>
       </p>
     </div>
 
@@ -191,7 +205,7 @@
   </main>
 
   <footer>
-    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rklnidn</p>
+    <p>© 2025 جميع الحقوق محفوظة لـ TheraLaugh</p>
   </footer>
 
   <script>
@@ -218,10 +232,11 @@
 
     function checkAdmin() {
       const pass = document.getElementById("adminPass").value;
-      if (pass === "gold123") {
+      const allowed = ["gold123", "zaid2025"];
+      if (allowed.includes(pass)) {
         window.location.href = "admin.html";
       } else {
-        document.getElementById("adminMsg").innerText = "❌ كلمة المرور غير صحيحة";
+        document.getElementById("adminMsg").innerText = "❌ كلمة المرور غير صحيحة أو غير مصرح بها";
       }
     }
 

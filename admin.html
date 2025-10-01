@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>لوحة التحكم | shahin__rknldin</title>
+  <title>لوحة التحكم | TheraFollowers</title>
   <style>
     body {
       background-color: #0f0f0f;
@@ -57,6 +57,10 @@
 
     .section.gold {
       border-left-color: gold;
+    }
+
+    .section.blue {
+      border-left-color: #00aaff;
     }
 
     label {
@@ -145,139 +149,205 @@
 
   <div class="fixed-header">
     <div class="back-button" onclick="goBack()">←</div>
-    <div class="site-name">shahin__rknldin</div>
+    <div class="site-name">TheraFollowers</div>
   </div>
 
   <main>
     <h1>لوحة التحكم</h1>
 
+    <!-- القسم الذهبي -->
     <div class="section gold">
-      <label>سعر الخدمة الذهبية (بالدولار)</label>
+      <label>سعر الخدمة الذهبية</label>
       <input type="number" id="goldPriceInput" placeholder="مثال: 1">
-      <button onclick="saveGoldPrice()">حفظ السعر</button>
-      <div class="info" id="priceInfo"></div>
-    </div>
-
-    <div class="section gold">
-      <label>الحسابات الذهبية (مفصولة بفواصل)</label>
-      <input type="text" id="goldInput" placeholder="user1,user2,user3">
+      <label>العملة</label>
+      <input type="text" id="goldCurrencyInput" placeholder="مثال: $ أو ريال">
       <label>رسالة القسم الذهبي</label>
       <input type="text" id="goldMsgInput" placeholder="اكتب رسالة تظهر فوق الحسابات الذهبية">
       <label>قيمة انتشار عند متابعة حساب ذهبي</label>
       <input type="number" id="goldSpreadInput" placeholder="مثال: 5">
-      <button onclick="saveGold()">حفظ الذهبية</button>
+      <button onclick="saveGoldSettings()">💾 حفظ إعدادات الذهبي</button>
+    </div>
+
+    <div class="section gold">
+      <label>رابط حساب ذهبي</label>
+      <input type="text" id="goldInput" placeholder="https://www.instagram.com/username">
+      <button onclick="addGold()">تأكيد الإضافة</button>
       <div class="account-list" id="goldList"></div>
     </div>
 
-    <div class="section">
-      <label>الحسابات الزرقاء (مفصولة بفواصل)</label>
-      <input type="text" id="blueInput" placeholder="user4,user5,user6">
+    <!-- القسم الأزرق -->
+    <div class="section blue">
       <label>رسالة القسم الأزرق</label>
       <input type="text" id="blueMsgInput" placeholder="اكتب رسالة تظهر فوق الحسابات الزرقاء">
       <label>قيمة انتشار عند متابعة حساب أزرق</label>
       <input type="number" id="blueSpreadInput" placeholder="مثال: 1">
-      <button onclick="saveBlue()">حفظ الزرقاء</button>
+      <button onclick="saveBlueSettings()">💾 حفظ إعدادات الأزرق</button>
     </div>
 
-    <div class="section">
-      <label>منع انتشار حساب أزرق</label>
-      <input type="text" id="blockInput" placeholder="اكتب اسم المستخدم">
+    <div class="section blue">
+      <label>رابط حساب أزرق</label>
+      <input type="text" id="blueInput" placeholder="https://www.instagram.com/username">
+      <button onclick="addBlue()">تأكيد الإضافة</button>
+      <div class="account-list" id="blueList"></div>
+    </div>
+
+    <div class="section blue">
+      <label>رابط حساب أزرق لمنع انتشاره</label>
+      <input type="text" id="blockInput" placeholder="https://www.instagram.com/username">
       <button onclick="blockBlue()">منع الانتشار</button>
       <div class="account-list" id="blockedList"></div>
     </div>
   </main>
   <script>
-    function goBack() {
-      history.back();
+  function goBack() {
+    history.back();
+  }
+
+  function extractUsername(link) {
+    try {
+      const url = new URL(link);
+      return url.pathname.replace("/", "").replace("@", "").trim();
+    } catch {
+      return null;
     }
+  }
 
-    function saveGoldPrice() {
-      const price = parseFloat(document.getElementById("goldPriceInput").value);
-      if (!isNaN(price)) {
-        localStorage.setItem("goldServicePrice", price.toFixed(2));
-        document.getElementById("priceInfo").innerText = `✅ تم حفظ سعر الخدمة الذهبية: $${price.toFixed(2)}`;
-      }
+  function saveGoldSettings() {
+    saveGoldPrice();
+    const msg = document.getElementById("goldMsgInput").value;
+    const spread = parseInt(document.getElementById("goldSpreadInput").value);
+    localStorage.setItem("goldMessage", msg);
+    localStorage.setItem("goldSpreadValue", spread);
+    alert("✅ تم حفظ إعدادات القسم الذهبي");
+  }
+
+  function saveBlueSettings() {
+    const msg = document.getElementById("blueMsgInput").value;
+    const spread = parseInt(document.getElementById("blueSpreadInput").value);
+    localStorage.setItem("blueMessage", msg);
+    localStorage.setItem("blueSpreadValue", spread);
+    alert("✅ تم حفظ إعدادات القسم الأزرق");
+  }
+
+  function saveGoldPrice() {
+    const price = parseFloat(document.getElementById("goldPriceInput").value);
+    const currency = document.getElementById("goldCurrencyInput").value.trim();
+    if (!isNaN(price) && currency) {
+      localStorage.setItem("goldPrice", price.toFixed(2));
+      localStorage.setItem("goldCurrency", currency);
     }
+  }
 
-    function saveGold() {
-      const accounts = document.getElementById("goldInput").value.split(",").map(x => x.trim()).filter(Boolean);
-      const msg = document.getElementById("goldMsgInput").value;
-      const spread = parseInt(document.getElementById("goldSpreadInput").value);
+  function addGold() {
+    const link = document.getElementById("goldInput").value.trim();
+    const username = extractUsername(link);
+    if (!username) return alert("❌ الرابط غير صالح");
 
-      localStorage.setItem("goldAccounts", JSON.stringify(accounts));
-      localStorage.setItem("goldMessage", msg);
-      localStorage.setItem("goldSpreadValue", spread);
-
-      renderGoldList();
-    }
-
-    function saveBlue() {
-      const accounts = document.getElementById("blueInput").value.split(",").map(x => x.trim()).filter(Boolean);
-      const msg = document.getElementById("blueMsgInput").value;
-      const spread = parseInt(document.getElementById("blueSpreadInput").value);
-
-      localStorage.setItem("blueAccounts", JSON.stringify(accounts));
-      localStorage.setItem("blueMessage", msg);
-      localStorage.setItem("blueSpreadValue", spread);
-    }
-
-    function blockBlue() {
-      const username = document.getElementById("blockInput").value.trim();
-      if (!username) return;
-
-      let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
-      if (!blocked.includes(username)) {
-        blocked.push(username);
-        localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
-      }
-
-      document.getElementById("blockInput").value = "";
-      renderBlockedList();
-    }
-
-    function removeBlocked(username) {
-      let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
-      blocked = blocked.filter(u => u !== username);
-      localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
-      renderBlockedList();
-    }
-
-    function removeGold(username) {
-      let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
-      gold = gold.filter(u => u !== username);
+    let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
+    if (!gold.includes(username)) {
+      gold.push(username);
       localStorage.setItem("goldAccounts", JSON.stringify(gold));
       renderGoldList();
+      document.getElementById("goldInput").value = "";
+    } else {
+      alert("⚠️ الحساب مضاف مسبقًا");
     }
+  }
 
-    function renderBlockedList() {
-      let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
-      const container = document.getElementById("blockedList");
-      container.innerHTML = "الحسابات التي تم منع انتشارها:";
-      blocked.forEach(username => {
-        const item = document.createElement("div");
-        item.className = "account-item";
-        item.innerHTML = `<span>@${username}</span><button onclick="removeBlocked('${username}')">❌ حذف</button>`;
-        container.appendChild(item);
-      });
+  function addBlue() {
+    const link = document.getElementById("blueInput").value.trim();
+    const username = extractUsername(link);
+    if (!username) return alert("❌ الرابط غير صالح");
+
+    let blue = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
+    if (!blue.includes(username)) {
+      blue.push(username);
+      localStorage.setItem("blueAccounts", JSON.stringify(blue));
+      renderBlueList();
+      document.getElementById("blueInput").value = "";
+    } else {
+      alert("⚠️ الحساب مضاف مسبقًا");
     }
+  }
 
-    function renderGoldList() {
-      let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
-      const container = document.getElementById("goldList");
-      container.innerHTML = "الحسابات الذهبية الحالية:";
-      gold.forEach(username => {
-        const item = document.createElement("div");
-        item.className = "account-item";
-        item.innerHTML = `<span>@${username}</span><button onclick="removeGold('${username}')">❌ حذف</button>`;
-        container.appendChild(item);
-      });
-    }
+  function blockBlue() {
+    const link = document.getElementById("blockInput").value.trim();
+    const username = extractUsername(link);
+    if (!username) return alert("❌ الرابط غير صالح");
 
-    window.onload = function () {
-      renderGoldList();
+    let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
+    if (!blocked.includes(username)) {
+      blocked.push(username);
+      localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
       renderBlockedList();
-    };
-  </script>
+      document.getElementById("blockInput").value = "";
+    } else {
+      alert("⚠️ الحساب مضاف مسبقًا إلى قائمة الحظر");
+    }
+  }
 
+  function removeGold(username) {
+    let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
+    gold = gold.filter(u => u !== username);
+    localStorage.setItem("goldAccounts", JSON.stringify(gold));
+    renderGoldList();
+  }
+
+  function removeBlue(username) {
+    let blue = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
+    blue = blue.filter(u => u !== username);
+    localStorage.setItem("blueAccounts", JSON.stringify(blue));
+    renderBlueList();
+  }
+
+  function removeBlocked(username) {
+    let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
+    blocked = blocked.filter(u => u !== username);
+    localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
+    renderBlockedList();
+  }
+
+  function renderGoldList() {
+    let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
+    const container = document.getElementById("goldList");
+    container.innerHTML = "الحسابات الذهبية الحالية:";
+    gold.forEach(username => {
+      const item = document.createElement("div");
+      item.className = "account-item";
+      item.innerHTML = `<span>@${username}</span><button onclick="removeGold('${username}')">❌ حذف</button>`;
+      container.appendChild(item);
+    });
+  }
+
+  function renderBlueList() {
+    let blue = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
+    const container = document.getElementById("blueList");
+    container.innerHTML = "الحسابات الزرقاء الحالية:";
+    blue.forEach(username => {
+      const item = document.createElement("div");
+      item.className = "account-item";
+      item.innerHTML = `<span>@${username}</span><button onclick="removeBlue('${username}')">❌ حذف</button>`;
+      container.appendChild(item);
+    });
+  }
+
+  function renderBlockedList() {
+    let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
+    const container = document.getElementById("blockedList");
+    container.innerHTML = "الحسابات التي تم منع انتشارها:";
+    blocked.forEach(username => {
+      const item = document.createElement("div");
+      item.className = "account-item";
+      item.innerHTML = `<span>@${username}</span><button onclick="removeBlocked('${username}')">❌ حذف</button>`;
+      container.appendChild(item);
+    });
+  }
+
+  window.onload = function () {
+    renderGoldList();
+    renderBlueList();
+    renderBlockedList();
+  };
+</script>
 </body>
 </html>

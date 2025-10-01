@@ -2,7 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>قائمة الحسابات | shahin__rknldin</title>
+  <title>قائمة الحسابات | TheraFollowers</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
   <style>
     body {
       background-color: #0f0f0f;
@@ -10,6 +11,7 @@
       font-family: Tahoma, sans-serif;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
 
     .fixed-header {
@@ -62,14 +64,9 @@
     .side-menu a {
       color: white;
       text-decoration: none;
-      margin: 0;
       font-size: 14px;
       padding: 8px;
       border-bottom: 1px solid #0077cc;
-    }
-
-    .side-menu a:last-child {
-      border-bottom: none;
     }
 
     main {
@@ -101,100 +98,88 @@
       margin-bottom: 30px;
     }
 
-    .gold-accounts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .gold-account {
-      background-color: gold;
-      color: black;
-      padding: 10px 15px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
+    .gold-account-box,
     .blue-account {
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       background-color: #1a1a1a;
       border: 2px solid #333;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: all 0.3s ease;
-      position: relative;
     }
 
-    .blue-account::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 6px;
-      height: 100%;
-      background-color: #00aaff;
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
+    .gold-account-box {
+      background-color: #FFD700;
+      color: black;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
     }
 
-    .blue-account.expanded {
-      transform: scale(1.05);
-      background-color: #002244;
-      border-color: #00aaff;
-    }
-
-    .account-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .gold-account-box img,
     .account-pic {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       object-fit: cover;
-      border: 1px solid white;
+      border: 2px solid white;
+    }
+
+    .username {
+      font-weight: bold;
+      font-size: 16px;
+      margin: 10px 0;
     }
 
     .follow-button {
-      padding: 8px 16px;
+      background-color: #00aaff;
+      color: white;
+      padding: 8px 14px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
-      background-color: #00aaff;
-      color: white;
+      margin-top: 8px;
     }
 
-    .official-follow {
+    .upload-section {
       margin-top: 10px;
       text-align: center;
+      display: none;
     }
 
-    .official-follow a {
-      background-color: #00aaff;
+    .upload-section input {
+      background-color: #222;
       color: white;
-      padding: 8px 16px;
+      border: 1px solid #00aaff;
+      padding: 6px;
       border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        zoom: 1;
+        overflow-x: hidden;
+      }
+    }
+
+    @media (min-width: 601px) {
+      body {
+        zoom: 1;
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
 <body>
-
   <div class="fixed-header">
     <div class="menu-button" onclick="toggleMenu()">≡</div>
-    <div class="site-name">shahin__rknldin</div>
+    <div class="site-name">TheraFollowers</div>
     <img src="" alt="صورة الملف الشخصي" class="profile-pic" id="profileImage">
     <div class="side-menu" id="sideMenu">
       <a href="login.html">تسجيل الدخول</a>
       <a href="services.html">الخدمات</a>
+      <a href="followers.html">الإحصائيات</a>
       <a href="javascript:history.back()">← رجوع</a>
     </div>
   </div>
@@ -203,14 +188,13 @@
     <div class="gold-section">
       <h2>الحسابات الذهبية</h2>
       <div class="message" id="goldMessage"></div>
-      <div class="gold-accounts" id="goldAccountsList"></div>
+      <div id="goldAccountsList"></div>
     </div>
 
     <div class="blue-title">الحسابات الزرقاء</div>
     <div class="message" id="blueMessage"></div>
     <div id="blueAccountsList"></div>
   </main>
-
   <script>
     function toggleMenu() {
       const menu = document.getElementById("sideMenu");
@@ -224,24 +208,58 @@
     function followUser(username, element) {
       if (!isLoggedInToInstagram()) {
         alert("يجب عليك تسجيل الدخول إلى إنستقرام لإتمام عملية المتابعة");
-        window.location.href = "https://www.instagram.com/accounts/login/";
+        window.location.href = "login.html";
         return;
       }
 
       element.classList.add("expanded");
 
       setTimeout(() => {
-        const container = document.createElement("div");
-        container.className = "official-follow";
-        container.innerHTML = `<a href="https://www.instagram.com/${username}" target="_blank">متابعة</a>`;
-        element.appendChild(container);
-
-        const followed = confirm(`هل قمت بمتابعة @${username}؟`);
-        if (followed) {
+        const confirmFollow = confirm(`هل قمت بمتابعة @${username}؟`);
+        if (confirmFollow) {
           markAsFollowed(username);
-          renderAccounts();
+          showUploadSection(username, element);
         }
-      }, 1000);
+      }, 800);
+    }
+
+    function showUploadSection(username, container) {
+      const uploadDiv = document.createElement("div");
+      uploadDiv.className = "upload-section";
+      uploadDiv.innerHTML = `
+        <p>📷 ارفع صورة تثبت أنك تابعت @${username}</p>
+        <input type="file" accept="image/*" onchange="handleImageUpload(event, '${username}')">
+      `;
+      container.appendChild(uploadDiv);
+      uploadDiv.style.display = "block";
+    }
+
+    function handleImageUpload(event, username) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const imageData = reader.result;
+
+        Tesseract.recognize(imageData, 'ara', {
+          logger: m => console.log(m)
+        }).then(({ data: { text } }) => {
+          let status = "failed";
+          if (text.includes(username) || text.includes("@" + username)) {
+            status = "verified";
+            alert(`✅ تم التحقق تلقائيًا من متابعة @${username}`);
+          } else {
+            alert(`❌ لم يتم العثور على اسم المستخدم داخل الصورة. سيتم إرسالها للمراجعة اليدوية.`);
+          }
+
+          const pending = JSON.parse(localStorage.getItem("pendingVerifications") || "[]");
+          pending.push({ username, imageData, status });
+          localStorage.setItem("pendingVerifications", JSON.stringify(pending));
+          renderAccounts(); // تحديث الواجهة بعد التحقق
+        });
+      };
+      reader.readAsDataURL(file);
     }
 
     function markAsFollowed(username) {
@@ -258,6 +276,7 @@
       const blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
       const followed = JSON.parse(localStorage.getItem("followedAccounts") || "[]");
       const profilePics = JSON.parse(localStorage.getItem("accountImages") || "{}");
+      const verificationList = JSON.parse(localStorage.getItem("pendingVerifications") || "[]");
 
       const goldMsg = localStorage.getItem("goldMessage") || "";
       const blueMsg = localStorage.getItem("blueMessage") || "";
@@ -274,8 +293,24 @@
       gold.forEach(username => {
         if (!followed.includes(username)) {
           const item = document.createElement("div");
-          item.className = "gold-account";
-          item.innerText = `@${username}`;
+          item.className = "gold-account-box";
+          const imgSrc = profilePics[username] || "";
+          item.innerHTML = `
+            <img src="${imgSrc}" alt="صورة الحساب">
+            <span class="username">@${username}</span>
+            <button class="follow-button" onclick="followUser('${username}', this.parentElement)">تابع</button>
+          `;
+          const statusObj = verificationList.find(v => v.username === username);
+          if (statusObj) {
+            const statusText = statusObj.status === "verified" ? "✅ تم التحقق" :
+                               statusObj.status === "failed" ? "❌ فشل التحقق" :
+                               "⏳ بانتظار التحقق";
+            const statusEl = document.createElement("div");
+            statusEl.style.color = "white";
+            statusEl.style.fontSize = "13px";
+            statusEl.innerText = statusText;
+            item.appendChild(statusEl);
+          }
           goldContainer.appendChild(item);
         }
       });
@@ -292,13 +327,24 @@
             </div>
             <button class="follow-button" onclick="followUser('${username}', this.parentElement)">تابع</button>
           `;
+          const statusObj = verificationList.find(v => v.username === username);
+          if (statusObj) {
+            const statusText = statusObj.status === "verified" ? "✅ تم التحقق" :
+                               statusObj.status === "failed" ? "❌ فشل التحقق" :
+                               "⏳ بانتظار التحقق";
+            const statusEl = document.createElement("div");
+            statusEl.style.color = "white";
+            statusEl.style.fontSize = "13px";
+            statusEl.innerText = statusText;
+            item.appendChild(statusEl);
+          }
           blueContainer.appendChild(item);
         }
       });
     }
 
     function loadProfileImage() {
-      const imgUrl = localStorage.getItem("profileImageUrl");
+      const imgUrl = localStorage.getItem("profilePic");
       if (imgUrl) {
         document.getElementById("profileImage").src = imgUrl;
       }
@@ -309,6 +355,5 @@
       renderAccounts();
     };
   </script>
-
 </body>
 </html>

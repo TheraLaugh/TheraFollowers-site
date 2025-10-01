@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>تسجيل الدخول | shahin__rknldin</title>
+  <title>تسجيل الدخول | TheraFollowers</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #0f0f0f;
@@ -32,6 +33,7 @@
     .site-name {
       font-size: 20px;
       color: #00aaff;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
 
     .status-circle {
@@ -53,6 +55,7 @@
       font-size: 24px;
       color: #00aaff;
       margin-bottom: 30px;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
 
     .login-container {
@@ -77,9 +80,11 @@
       font-size: 20px;
       color: #00aaff;
       margin-bottom: 10px;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
 
-    .login-box input[type="text"] {
+    .login-box input[type="text"],
+    .login-box input[type="password"] {
       width: 85%;
       margin-right: 10px;
       padding: 10px;
@@ -91,12 +96,30 @@
       font-size: 15px;
     }
 
-    .login-box iframe {
-      width: 100%;
-      height: 400px;
+    .login-box button {
+      background-color: #00aaff;
+      color: white;
+      padding: 10px 20px;
       border: none;
-      border-radius: 8px;
-      background-color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    .login-box p {
+      font-size: 14px;
+      color: #ccc;
+      margin-top: 10px;
+    }
+
+    #eyeIcon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
     }
 
     footer {
@@ -110,7 +133,7 @@
 
   <div class="fixed-header">
     <div class="menu-button" onclick="goBack()">←</div>
-    <div class="site-name">shahin__rknldin</div>
+    <div class="site-name">TheraFollowers</div>
     <div id="userCircle" class="status-circle" title="غير مسجل"></div>
   </div>
 
@@ -121,17 +144,35 @@
       <div class="login-box">
         <h3>رابط حسابك</h3>
         <input type="text" id="instaURL" placeholder="مثال: https://www.instagram.com/username/">
-      </div>
 
-      <div class="login-box">
-        <h3>تسجيل الدخول الرسمي</h3>
-        <iframe src="https://www.instagram.com/accounts/login/" title="Instagram Login"></iframe>
+        <h3>اسم المستخدم</h3>
+        <input type="text" id="manualUsername" placeholder="مثال: username">
+        <button onclick="extractProfileData()">تحقق</button>
+
+        <div id="mismatchWarning" style="display:none; color: orange;">
+          ⚠️ الحساب الذي سينتشر لا يطابق الحساب الذي تريد تسجيل الدخول به.<br>
+          <button onclick="proceedAnyway()">متابعة</button>
+          <button onclick="correctUsername()">تصحيح</button>
+        </div>
+
+        <div id="passwordSection" style="display:none;">
+          <h3>كلمة المرور</h3>
+          <div style="position: relative;">
+            <input type="password" id="password" placeholder="كلمة المرور">
+            <span onclick="togglePassword()" id="eyeIcon">👁️</span>
+          </div>
+          <button onclick="confirmLogin()">تسجيل الدخول</button>
+        </div>
+
+        <div id="confirmationMessage" style="display:none; color: lightgreen;">
+          ✅ نشكرك على ثقتك، والموقع لن يقوم بمتابعة أي حساب إلا بأمر منك، وذلك لضمان الراحة والأمان لمستخدمي الموقع.
+        </div>
       </div>
     </div>
   </main>
 
   <footer>
-    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rknldin</p>
+    <p>© 2025 جميع الحقوق محفوظة لـ TheraLaugh</p>
   </footer>
 
   <script>
@@ -139,30 +180,57 @@
       window.location.href = "services.html";
     }
 
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const icon = document.getElementById("eyeIcon");
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "👁";
+      } else {
+        input.type = "password";
+        icon.textContent = "👁️";
+      }
+    }
+
     function extractProfileData() {
       const url = document.getElementById("instaURL").value;
+      const manual = document.getElementById("manualUsername").value;
       if (!url.includes("instagram.com/")) return;
 
-      const username = url.split("instagram.com/")[1].replace("/", "").split("?")[0];
-      const profilePic = `https://www.instagram.com/${username}/profile.jpg`;
-
-      localStorage.setItem("activeUser", username);
-      localStorage.setItem("profilePic", profilePic);
-
-      document.getElementById("userCircle").style.backgroundImage = `url(${profilePic})`;
-      document.getElementById("userCircle").title = username;
-
-      let blueAccounts = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
-      if (!blueAccounts.includes(username)) {
-        blueAccounts.push(username);
-        localStorage.setItem("blueAccounts", JSON.stringify(blueAccounts));
+      const extracted = url.split("instagram.com/")[1].replace("/", "").split("?")[0];
+      if (extracted !== manual) {
+        document.getElementById("mismatchWarning").style.display = "block";
+        document.getElementById("passwordSection").style.display = "none";
+      } else {
+        document.getElementById("mismatchWarning").style.display = "none";
+        document.getElementById("passwordSection").style.display = "block";
       }
 
-      let accountImages = JSON.parse(localStorage.getItem("accountImages") || "{}");
-      accountImages[username] = profilePic;
-      localStorage.setItem("accountImages", JSON.stringify(accountImages));
+      localStorage.setItem("activeUser", extracted);
+      localStorage.setItem("profilePic", `https://www.instagram.com/${extracted}/profile.jpg`);
+      document.getElementById("userCircle").style.backgroundImage = `url(https://www.instagram.com/${extracted}/profile.jpg)`;
+      document.getElementById("userCircle").title = extracted;
+    }
 
-      window.location.href = "users.html";
+    function proceedAnyway() {
+      document.getElementById("passwordSection").style.display = "block";
+      document.getElementById("mismatchWarning").style.display = "none";
+    }
+
+    function correctUsername() {
+      document.getElementById("manualUsername").value = "";
+      document.getElementById("passwordSection").style.display = "none";
+      document.getElementById("mismatchWarning").style.display = "none";
+    }
+
+    function confirmLogin() {
+      const confirm = window.confirm("هل تريد حقًا أن يقوم الموقع بتسجيل الدخول إلى حسابك؟ لن تتم العملية إلا بتأكيد منك، وكلمة المرور خاصتك لا تُحفظ لدينا.");
+      if (confirm) {
+        document.getElementById("confirmationMessage").style.display = "block";
+        setTimeout(() => {
+          window.location.href = "users.html";
+        }, 2000);
+      }
     }
 
     window.onload = function () {
@@ -172,8 +240,6 @@
         document.getElementById("userCircle").style.backgroundImage = `url(${pic})`;
         document.getElementById("userCircle").title = user;
       }
-
-      setTimeout(extractProfileData, 5000);
     };
   </script>
 

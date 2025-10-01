@@ -14,8 +14,10 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  overflow-x: hidden;
 }
 
+/* رأس الصفحة */
 .fixed-header {
   background-color: var(--bg-secondary);
   padding: 10px;
@@ -24,18 +26,23 @@ body {
   align-items: center;
 }
 
+/* زر القائمة */
 .menu-button {
   font-size: 28px;
   color: var(--color-primary);
   cursor: pointer;
-  padding: 5px;
+  padding: 10px;
+  touch-action: manipulation;
 }
 
+/* اسم الموقع */
 .site-name {
   font-size: 20px;
   color: var(--color-primary);
+  font-weight: bold;
 }
 
+/* صورة الملف الشخصي */
 .status-circle,
 .profile-pic {
   width: 40px;
@@ -49,6 +56,7 @@ body {
   object-fit: cover;
 }
 
+/* القائمة الجانبية */
 .side-menu {
   display: none;
   position: absolute;
@@ -60,6 +68,7 @@ body {
   padding: 10px;
   z-index: 999;
   width: 160px;
+  transition: all 0.3s ease-in-out;
 }
 
 .side-menu ul {
@@ -83,8 +92,26 @@ body {
   background-color: var(--color-primary);
 }
 
+/* الفوتر */
 footer {
   margin-top: 40px;
   font-size: 14px;
   color: var(--color-gray);
+}
+
+/* استجابة للجوال */
+@media (max-width: 600px) {
+  .side-menu {
+    width: 100%;
+    right: 0;
+    top: 50px;
+  }
+
+  .menu-button {
+    font-size: 24px;
+  }
+
+  .site-name {
+    font-size: 18px;
+  }
 }

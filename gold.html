@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>القائمة الذهبية | shahin__rknldin</title>
+  <title>القائمة الذهبية | TheraFollowers</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
@@ -133,20 +133,36 @@
       cursor: pointer;
       border-radius: 6px;
     }
+
+    @media (max-width: 600px) {
+      .gold-box {
+        width: 95%;
+        padding: 15px;
+      }
+
+      .admin-trigger {
+        font-size: 20px;
+      }
+
+      #adminLogin input,
+      #adminLogin button {
+        width: 90%;
+        max-width: 300px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <div class="fixed-header">
     <div class="menu-button" onclick="toggleMenu()">≡</div>
-    <div class="site-name">shahin__rknldin</div>
+    <div class="site-name">TheraFollowers</div>
     <div id="userCircle" class="status-circle" title="غير مسجل"></div>
   </div>
 
   <div id="sideMenu" class="side-menu">
     <ul>
       <li id="menu-login" onclick="goToLogin()">تسجيل الدخول</li>
-      <li id="menu-points" style="display:none;">نقاطي</li>
       <li onclick="goToStats()">الإحصائيات</li>
     </ul>
   </div>
@@ -155,16 +171,14 @@
     <h1 class="gold-title">القائمة الذهبية</h1>
 
     <div class="gold-box">
-      <p>إذا أردت إضافة حسابك إلى القائمة الذهبية، فقط تواصل معي من خلال حسابي على إنستقرام</p>
-      <p><a href="https://www.instagram.com/shahin__rknldin" target="_blank" style="color: #00aaff;">shahin__rknldin</a></p>
+      <p>إذا أردت إضافة حسابك إلى القائمة الذهبية، فقط تواصل معي من خلال حسابي على إنستقرام:</p>
+      <p>📱 <a href="https://www.instagram.com/theralaugh?igsh=MXJ2cG1lZTUxMmN6Nw==" target="_blank" style="color: gold; font-weight: bold;">theralaugh</a></p>
       <p>لا نحتاج إلى كلمة السر، فقط اسم المستخدم.</p>
-      <p class="price">سعر الخدمة هو <span id="service-price">1$</span></p>
+      <p class="price">سعر الخدمة هو <span id="service-price">1</span> <span id="service-currency">$</span></p>
     </div>
 
-    <!-- زر 🫆 خارج المستطيل -->
     <div class="admin-trigger" onclick="showAdminLogin()">🫆</div>
 
-    <!-- إدخال كلمة السر -->
     <div id="adminLogin">
       <input type="password" id="adminPass" placeholder="كلمة السر">
       <br>
@@ -173,7 +187,7 @@
   </main>
 
   <footer>
-    <p>© 2025 جميع الحقوق محفوظة لـ shahin__rknldin</p>
+    <p>© 2025 جميع الحقوق محفوظة لـ theralaugh</p>
   </footer>
 
   <script>
@@ -198,7 +212,7 @@
 
     function checkAdmin() {
       const pass = document.getElementById("adminPass").value;
-      if (pass === "gold123") {
+      if (pass === "gold123" || pass === "zaid2025") {
         window.location.href = "admin.html";
       } else {
         alert("كلمة السر خاطئة");
@@ -209,7 +223,6 @@
       const user = localStorage.getItem("activeUser");
       if (user) {
         document.getElementById("menu-login").innerText = "حسابي";
-        document.getElementById("menu-points").style.display = "inline-block";
         const circle = document.getElementById("userCircle");
         if (circle) {
           circle.style.backgroundImage = `url(${localStorage.getItem("profilePic")})`;
@@ -218,9 +231,9 @@
       }
 
       const price = localStorage.getItem("goldPrice");
-      if (price) {
-        document.getElementById("service-price").innerText = price;
-      }
+      const currency = localStorage.getItem("goldCurrency");
+      if (price) document.getElementById("service-price").innerText = price;
+      if (currency) document.getElementById("service-currency").innerText = currency;
     };
   </script>
 
