@@ -125,6 +125,18 @@
       font-size: 14px;
     }
 
+    .contact-button {
+      display: inline-block;
+      background-color: #00ff99;
+      color: #0f0f0f;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: none;
+      margin-top: 5px;
+    }
+
     footer {
       margin-top: 40px;
       font-size: 14px;
@@ -153,10 +165,16 @@
   <div class="green-box">
     <p>من خلال إعطائك حساب إلي سواء كان وهمي أو حقيقي (ويُفضل أن يكون وهمي)، سأرسل لك متابعين وعددهم <span id="followerCount">15</span>.</p>
 
+    <p style="color:#00ff99; font-size:14px; font-weight:bold;">
+      ملاحظة: عند إرسال المعلومات، يُصبح الحساب ملكًا لـ TheraLaugh ويحق له التصرف الكامل فيه، بما في ذلك تغيير كلمة المرور.  
+      إذا رغبت في استرجاع الحساب لاحقًا، يجب التواصل مع TheraLaugh وتقديم اسم المستخدم وكلمة المرور السابقة ومعلومات تؤكد ملكيتك.
+      <br>
+      <a href="https://www.instagram.com/theralaugh?igsh=MXJ2cG1lZTUxMmN6Nw==" target="_blank" class="contact-button">📱 @TheraLaugh</a>
+    </p>
+
     <input type="url" id="accountLink" placeholder="رابط حساب إنستقرام المراد تزويده">
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور لاسم المستخدم">
-
     <button onclick="submitGreenService()">إرسال المعلومات</button>
   </div>
 
@@ -188,10 +206,15 @@
       const pass = document.getElementById("password").value;
 
       if (link && user && pass) {
-        alert("تم إرسال المعلومات بنجاح");
-        // لاحقًا: إرسال البيانات إلى لوحة التحكم أو قاعدة البيانات
+        const requests = JSON.parse(localStorage.getItem("greenRequests") || "[]");
+        requests.push({ link, user, pass });
+        localStorage.setItem("greenRequests", JSON.stringify(requests));
+        alert("✅ تم إرسال المعلومات بنجاح");
+        document.getElementById("accountLink").value = "";
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
       } else {
-        alert("يرجى تعبئة جميع الحقول");
+        alert("❌ يرجى تعبئة جميع الحقول");
       }
     }
 
@@ -202,7 +225,6 @@
         document.getElementById("userCircle").title = user;
       }
 
-      // لاحقًا: ربط العدد بلوحة التحكم
       document.getElementById("followerCount").innerText = localStorage.getItem("greenFollowerCount") || "15";
     };
   </script>
