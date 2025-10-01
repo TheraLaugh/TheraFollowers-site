@@ -55,13 +55,9 @@
       text-align: right;
     }
 
-    .section.gold {
-      border-left-color: gold;
-    }
-
-    .section.blue {
-      border-left-color: #00aaff;
-    }
+    .section.gold { border-left-color: gold; }
+    .section.blue { border-left-color: #00aaff; }
+    .section.green { border-left-color: #00ff99; }
 
     label {
       display: block;
@@ -90,18 +86,11 @@
       margin-top: 10px;
     }
 
-    button:hover {
-      background-color: #0099dd;
-    }
-
-    .gold button {
-      background-color: gold;
-      color: black;
-    }
-
-    .gold button:hover {
-      background-color: #e6c200;
-    }
+    button:hover { background-color: #0099dd; }
+    .gold button { background-color: gold; color: black; }
+    .gold button:hover { background-color: #e6c200; }
+    .green button { background-color: #00ff99; color: black; }
+    .green button:hover { background-color: #00dd88; }
 
     .info {
       font-size: 14px;
@@ -117,17 +106,12 @@
     }
 
     .account-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       background-color: #2a2a2a;
-      padding: 6px 10px;
+      padding: 10px;
       margin: 5px 0;
       border-radius: 6px;
-    }
-
-    .account-item span {
       color: white;
+      text-align: right;
     }
 
     .account-item button {
@@ -138,11 +122,11 @@
       padding: 4px 10px;
       cursor: pointer;
       font-size: 12px;
+      float: left;
     }
 
-    .account-item button:hover {
-      background-color: darkred;
-    }
+    .account-item button:hover { background-color: darkred; }
+    a { color: #00ff99; text-decoration: none; }
   </style>
 </head>
 <body>
@@ -157,6 +141,8 @@
 
     <!-- القسم الذهبي -->
     <div class="section gold">
+      <label>كلمة القسم الذهبي (مثال: مدفوع)</label>
+      <input type="text" id="goldLabelInput" placeholder="مثال: مدفوع">
       <label>سعر الخدمة الذهبية</label>
       <input type="number" id="goldPriceInput" placeholder="مثال: 1">
       <label>العملة</label>
@@ -177,6 +163,8 @@
 
     <!-- القسم الأزرق -->
     <div class="section blue">
+      <label>كلمة القسم الأزرق (مثال: مجانا)</label>
+      <input type="text" id="blueLabelInput" placeholder="مثال: مجانا">
       <label>رسالة القسم الأزرق</label>
       <input type="text" id="blueMsgInput" placeholder="اكتب رسالة تظهر فوق الحسابات الزرقاء">
       <label>قيمة انتشار عند متابعة حساب أزرق</label>
@@ -197,157 +185,80 @@
       <button onclick="blockBlue()">منع الانتشار</button>
       <div class="account-list" id="blockedList"></div>
     </div>
+    <!-- القسم الأخضر -->
+    <div class="section green">
+      <label>كلمة القسم الأخضر (مثال: مجانا)</label>
+      <input type="text" id="greenLabelInput" placeholder="مثال: مجانا">
+      <label>عدد المتابعين في الخدمة الخضراء</label>
+      <input type="number" id="greenFollowerInput" placeholder="مثال: 15">
+      <button onclick="saveGreenSettings()">💾 حفظ إعدادات الخدمة الخضراء</button>
+      <div class="info">هذا العدد سيظهر تلقائيًا في صفحة الخدمة الخضراء لجميع المستخدمين</div>
+    </div>
+
+    <div class="section green">
+      <h3>طلبات الخدمة الخضراء</h3>
+      <div class="account-list" id="greenRequestsList"></div>
+    </div>
   </main>
+
   <script>
-  function goBack() {
-    history.back();
-  }
-
-  function extractUsername(link) {
-    try {
-      const url = new URL(link);
-      return url.pathname.replace("/", "").replace("@", "").trim();
-    } catch {
-      return null;
+    function saveGreenSettings() {
+      const count = parseInt(document.getElementById("greenFollowerInput").value);
+      const label = document.getElementById("greenLabelInput").value.trim();
+      if (!isNaN(count) && count > 0) {
+        localStorage.setItem("greenFollowerCount", count);
+        if (label) localStorage.setItem("greenLabel", label);
+        alert("✅ تم حفظ إعدادات الخدمة الخضراء");
+      } else {
+        alert("❌ أدخل رقم صحيح أكبر من صفر");
+      }
     }
-  }
 
-  function saveGoldSettings() {
-    saveGoldPrice();
-    const msg = document.getElementById("goldMsgInput").value;
-    const spread = parseInt(document.getElementById("goldSpreadInput").value);
-    localStorage.setItem("goldMessage", msg);
-    localStorage.setItem("goldSpreadValue", spread);
-    alert("✅ تم حفظ إعدادات القسم الذهبي");
-  }
+    function renderGreenRequests() {
+      const container = document.getElementById("greenRequestsList");
+      container.innerHTML = "";
+      const requests = JSON.parse(localStorage.getItem("greenRequests") || "[]");
 
-  function saveBlueSettings() {
-    const msg = document.getElementById("blueMsgInput").value;
-    const spread = parseInt(document.getElementById("blueSpreadInput").value);
-    localStorage.setItem("blueMessage", msg);
-    localStorage.setItem("blueSpreadValue", spread);
-    alert("✅ تم حفظ إعدادات القسم الأزرق");
-  }
+      if (requests.length === 0) {
+        container.innerHTML = "<p>لا توجد طلبات حالياً</p>";
+        return;
+      }
 
-  function saveGoldPrice() {
-    const price = parseFloat(document.getElementById("goldPriceInput").value);
-    const currency = document.getElementById("goldCurrencyInput").value.trim();
-    if (!isNaN(price) && currency) {
-      localStorage.setItem("goldPrice", price.toFixed(2));
-      localStorage.setItem("goldCurrency", currency);
+      requests.forEach((req, index) => {
+        const item = document.createElement("div");
+        item.className = "account-item";
+        item.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="flex:1;">
+              <span>🔗 <a href="${req.link}" target="_blank">${req.link}</a></span><br>
+              <span>👤 ${req.user}</span><br>
+              <span>🔑 ${req.pass}</span>
+            </div>
+            <button onclick="removeGreenRequest(${index})" style="background-color:red; color:white; border:none; border-radius:50%; width:24px; height:24px; font-size:16px; line-height:20px; text-align:center;">−</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
     }
-  }
 
-  function addGold() {
-    const link = document.getElementById("goldInput").value.trim();
-    const username = extractUsername(link);
-    if (!username) return alert("❌ الرابط غير صالح");
-
-    let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
-    if (!gold.includes(username)) {
-      gold.push(username);
-      localStorage.setItem("goldAccounts", JSON.stringify(gold));
-      renderGoldList();
-      document.getElementById("goldInput").value = "";
-    } else {
-      alert("⚠️ الحساب مضاف مسبقًا");
+    function removeGreenRequest(index) {
+      let requests = JSON.parse(localStorage.getItem("greenRequests") || "[]");
+      requests.splice(index, 1);
+      localStorage.setItem("greenRequests", JSON.stringify(requests));
+      renderGreenRequests();
     }
-  }
 
-  function addBlue() {
-    const link = document.getElementById("blueInput").value.trim();
-    const username = extractUsername(link);
-    if (!username) return alert("❌ الرابط غير صالح");
-
-    let blue = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
-    if (!blue.includes(username)) {
-      blue.push(username);
-      localStorage.setItem("blueAccounts", JSON.stringify(blue));
-      renderBlueList();
-      document.getElementById("blueInput").value = "";
-    } else {
-      alert("⚠️ الحساب مضاف مسبقًا");
-    }
-  }
-
-  function blockBlue() {
-    const link = document.getElementById("blockInput").value.trim();
-    const username = extractUsername(link);
-    if (!username) return alert("❌ الرابط غير صالح");
-
-    let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
-    if (!blocked.includes(username)) {
-      blocked.push(username);
-      localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
-      renderBlockedList();
-      document.getElementById("blockInput").value = "";
-    } else {
-      alert("⚠️ الحساب مضاف مسبقًا إلى قائمة الحظر");
-    }
-  }
-
-  function removeGold(username) {
-    let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
-    gold = gold.filter(u => u !== username);
-    localStorage.setItem("goldAccounts", JSON.stringify(gold));
-    renderGoldList();
-  }
-
-  function removeBlue(username) {
-    let blue = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
-    blue = blue.filter(u => u !== username);
-    localStorage.setItem("blueAccounts", JSON.stringify(blue));
-    renderBlueList();
-  }
-
-  function removeBlocked(username) {
-    let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
-    blocked = blocked.filter(u => u !== username);
-    localStorage.setItem("blockedBlueAccounts", JSON.stringify(blocked));
-    renderBlockedList();
-  }
-
-  function renderGoldList() {
-    let gold = JSON.parse(localStorage.getItem("goldAccounts") || "[]");
-    const container = document.getElementById("goldList");
-    container.innerHTML = "الحسابات الذهبية الحالية:";
-    gold.forEach(username => {
-      const item = document.createElement("div");
-      item.className = "account-item";
-      item.innerHTML = `<span>@${username}</span><button onclick="removeGold('${username}')">❌ حذف</button>`;
-      container.appendChild(item);
-    });
-  }
-
-  function renderBlueList() {
-    let blue = JSON.parse(localStorage.getItem("blueAccounts") || "[]");
-    const container = document.getElementById("blueList");
-    container.innerHTML = "الحسابات الزرقاء الحالية:";
-    blue.forEach(username => {
-      const item = document.createElement("div");
-      item.className = "account-item";
-      item.innerHTML = `<span>@${username}</span><button onclick="removeBlue('${username}')">❌ حذف</button>`;
-      container.appendChild(item);
-    });
-  }
-
-  function renderBlockedList() {
-    let blocked = JSON.parse(localStorage.getItem("blockedBlueAccounts") || "[]");
-    const container = document.getElementById("blockedList");
-    container.innerHTML = "الحسابات التي تم منع انتشارها:";
-    blocked.forEach(username => {
-      const item = document.createElement("div");
-      item.className = "account-item";
-      item.innerHTML = `<span>@${username}</span><button onclick="removeBlocked('${username}')">❌ حذف</button>`;
-      container.appendChild(item);
-    });
-  }
-
-  window.onload = function () {
-    renderGoldList();
-    renderBlueList();
-    renderBlockedList();
-  };
-</script>
+    window.onload = function () {
+      renderGreenRequests();
+      const greenCount = localStorage.getItem("greenFollowerCount");
+      if (greenCount) {
+        document.getElementById("greenFollowerInput").value = greenCount;
+      }
+      const greenLabel = localStorage.getItem("greenLabel");
+      if (greenLabel) {
+        document.getElementById("greenLabelInput").value = greenLabel;
+      }
+    };
+  </script>
 </body>
 </html>

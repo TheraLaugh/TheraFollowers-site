@@ -106,10 +106,19 @@
       box-shadow: 0 0 0 5px transparent;
       cursor: pointer;
       font-family: Tahoma, sans-serif;
+      transition: 0.3s;
+    }
+
+    .service-box:hover {
+      transform: scale(1.02);
     }
 
     .service-box.blue {
       box-shadow: inset 5px 0 0 #00aaff;
+    }
+
+    .service-box.green {
+      box-shadow: inset 5px 0 0 #00ff99;
     }
 
     .service-box.gold {
@@ -164,13 +173,19 @@
       <div class="service-box blue" onclick="goToLogin()">
         <h2>خدمة زيادة متابعين</h2>
         <p>طريقة لزيادة انتشار حسابك عن طريق عرض حسابك على الكثير من المستخدمين الحاصلين للموقع ويقومون بمتابعته</p>
-        <div class="label">مجانا</div>
+        <div class="label" id="label-blue">مجانا</div>
+      </div>
+
+      <div class="service-box green" onclick="goToGreen()">
+        <h2>الخدمة الخضراء</h2>
+        <p>طريقة لزيادة متابعين حسابك وذلك من خلال أن تعطيني حساب إنستقرام ثاني يمكن تسجيل الدخول به بشكل طبيعي وسأرسل لك حسابات لتتابعك</p>
+        <div class="label" id="label-green">مجانا</div>
       </div>
 
       <div class="service-box gold" onclick="goToGold()">
         <h2>خدمة القائمة الذهبية</h2>
         <p>طريقة لزيادة متابعين حسابك عن طريق وضع حسابك على القائمة الذهبية، وهذا يعني أن المستخدمين يقومون بمتابعته بشكل كبير</p>
-        <div class="label">مدفوع</div>
+        <div class="label" id="label-gold">مدفوع</div>
       </div>
     </div>
   </main>
@@ -199,6 +214,10 @@
       window.location.href = "gold.html";
     }
 
+    function goToGreen() {
+      window.location.href = "green.html";
+    }
+
     window.onload = function () {
       const user = localStorage.getItem("activeUser");
       if (user) {
@@ -210,6 +229,11 @@
           circle.title = user;
         }
       }
+
+      // لاحقًا يمكن ربط هذه القيم بلوحة التحكم
+      document.getElementById("label-blue").innerText = "مجانا";
+      document.getElementById("label-green").innerText = "مجانا";
+      document.getElementById("label-gold").innerText = "مدفوع";
     };
   </script>
 
